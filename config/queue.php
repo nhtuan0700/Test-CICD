@@ -90,4 +90,8 @@ return [
         'table' => 'failed_jobs',
     ],
 
+    'name' => [
+        'job1' => 'job1',
+        'job2' => 'job2'
+    ],
 ];
