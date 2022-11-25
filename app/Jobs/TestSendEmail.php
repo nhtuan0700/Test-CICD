@@ -22,7 +22,7 @@ class TestSendEmail implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(private string $email)
+    public function __construct(private $users)
     {
         //
     }
@@ -34,7 +34,8 @@ class TestSendEmail implements ShouldQueue
      */
     public function handle()
     {
-        Mail::to($this->email)->send(new TestMailNotify());
-        sleep(0.5);
+        foreach ($this->users as $user) {
+            Mail::to($user->email)->send(new TestMailNotify());
+        }
     }
 }

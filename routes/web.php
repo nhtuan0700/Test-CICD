@@ -23,15 +23,13 @@ Route::post('/upload-file', [UploadFileController::class, 'upload']);
 
 
 Route::get('email', function () {
-    \Illuminate\Support\Facades\DB::table('users')->where('id', '<', 30)->orderBy('id')->chunk(50, function ($users) {
-        foreach ($users as $user) {
-            \App\Jobs\TestSendEmail::dispatch($user->email)->onQueue('job1');
-        }
+    \Illuminate\Support\Facades\DB::table('users')->where('id', '<', 20)->orderBy('id')->chunk(10, function ($users) {
+        \App\Jobs\TestSendEmail::dispatch($users);
     });
     dd('Send mail success');
 });
 
-Route::get('job', function() {
+Route::get('job', function () {
     LogJobTest::dispatch()->onQueue('job2');
     dd('Test other job success');
 });
