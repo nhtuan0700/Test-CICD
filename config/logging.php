@@ -119,4 +119,8 @@ return [
         ],
     ],
 
+    // Custom show query log
+    'sql' => [
+        'enable' => env('LOG_SQL_ENABLE', false),
+    ],
 ];
