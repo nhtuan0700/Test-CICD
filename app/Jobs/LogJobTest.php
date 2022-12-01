@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Jobs;
 
@@ -31,6 +32,6 @@ class LogJobTest implements ShouldQueue
     public function handle()
     {
         info('Test other job');
-        info(123);
+        info('123');
     }
 }
