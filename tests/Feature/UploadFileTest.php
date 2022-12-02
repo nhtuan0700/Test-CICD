@@ -17,11 +17,11 @@ class UploadFileTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function test_avatars_upload_large_()
+    public function test_avatars_upload_large()
     {
         Storage::fake('files');
 
-        $validFile = UploadedFile::fake()->image('avatar.jpg')->size(100);
+        $validFile = UploadedFile::fake()->image('avatar.jpg');
         $response = $this->post('/upload-file', [
             'avatar' => $validFile,
         ]);
