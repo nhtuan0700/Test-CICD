@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ReflectionTestController;
 use App\Http\Controllers\UploadFileController;
 use App\Jobs\LogJobTest;
 use Illuminate\Support\Facades\Route;
@@ -15,9 +16,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
 Route::post('/upload-file', [UploadFileController::class, 'upload']);
 
@@ -33,3 +34,6 @@ Route::get('job', function () {
     LogJobTest::dispatch()->onQueue('job2');
     dd('Test other job success');
 });
+
+
+Route::get('', [ReflectionTestController::class, 'index']);
