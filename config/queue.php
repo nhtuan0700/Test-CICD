@@ -42,6 +42,14 @@ return [
             'after_commit' => false,
         ],
 
+        'database-cancellations' => [
+            'driver' => 'database',
+            'table' => 'jobs',
+            'queue' => 'cancellations',
+            'retry_after' => 5,
+            'after_commit' => false,
+        ],
+
         'beanstalkd' => [
             'driver' => 'beanstalkd',
             'host' => 'localhost',
@@ -88,10 +96,5 @@ return [
         'driver' => env('QUEUE_FAILED_DRIVER', 'database-uuids'),
         'database' => env('DB_CONNECTION', 'mysql'),
         'table' => 'failed_jobs',
-    ],
-
-    'name' => [
-        'job1' => 'job1',
-        'job2' => 'job2'
     ],
 ];

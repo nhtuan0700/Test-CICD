@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use Exception;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -9,9 +10,12 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 
-class LogJobTest implements ShouldQueue
+class ProcessPayment implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    public $tries = 3;
+    public $backoff = 6;
+    // public $maxExceptions = 1;
 
     /**
      * Create a new job instance.
@@ -20,7 +24,7 @@ class LogJobTest implements ShouldQueue
      */
     public function __construct()
     {
-        //
+        $this->queue = 'payments';
     }
 
     /**
@@ -30,7 +34,13 @@ class LogJobTest implements ShouldQueue
      */
     public function handle()
     {
-        info('Test other job');
-        info(123);
+        // throw new Exception('ProcessPaymentException');
+        info('Process Payment .....');
+        return $this->release(now()->addSeconds(3));
+    }
+
+    public function failed(Exception $e)
+    {
+        info('Failed to process payment');
     }
 }

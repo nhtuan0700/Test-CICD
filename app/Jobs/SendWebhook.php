@@ -2,30 +2,33 @@
 
 namespace App\Jobs;
 
-use App\Mail\TestMailNotify;
-use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Mail;
 
-class TestSendEmail implements ShouldQueue
+class SendWebhook implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    public $tries = 2;
+    
 
-    public $tries = 3;
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(private $users)
+    public function __construct()
     {
         //
     }
+
+    // public function retryUntil()
+    // {
+    //     return now()->addSecond(15);
+    // }
 
     /**
      * Execute the job.
@@ -34,8 +37,7 @@ class TestSendEmail implements ShouldQueue
      */
     public function handle()
     {
-        foreach ($this->users as $user) {
-            Mail::to($user->email)->send(new TestMailNotify());
-        }
+        info('Send webhook');
+        return $this->release(now()->addSecond(3));
     }
 }

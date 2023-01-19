@@ -2,7 +2,8 @@
 
 use App\Http\Controllers\ReflectionTestController;
 use App\Http\Controllers\UploadFileController;
-use App\Jobs\LogJobTest;
+use App\Jobs\CancelConference;
+use App\Jobs\ProcessPayment;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,17 +24,11 @@ use Illuminate\Support\Facades\Route;
 Route::post('/upload-file', [UploadFileController::class, 'upload']);
 
 
-Route::get('email', function () {
-    \Illuminate\Support\Facades\DB::table('users')->where('id', '<', 20)->orderBy('id')->chunk(10, function ($users) {
-        \App\Jobs\TestSendEmail::dispatch($users);
-    });
-    dd('Send mail success');
-});
-
-Route::get('job', function () {
-    LogJobTest::dispatch()->onQueue('job2');
-    dd('Test other job success');
-});
-
-
 Route::get('', [ReflectionTestController::class, 'index']);
+
+Route::group(['prefix' => 'job'], function () {
+    Route::get('cancel', function () {
+        CancelConference::dispatch();
+        dd('Cancel conference job success');
+    });
+});
