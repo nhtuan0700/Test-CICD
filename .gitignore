@@ -17,3 +17,5 @@ yarn-error.log
 /.idea
 /.vscode
 /storage
+
+.docker/mysql/db/data
