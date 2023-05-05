@@ -5,7 +5,6 @@ services:
     build:
       context: .
       dockerfile: ./.docker/php/Dockerfile
-      target: development
     container_name: php
     restart: unless-stopped
     tty: true
@@ -47,12 +46,10 @@ services:
     ports:
       - "3307:3306"
     environment:
-      MYSQL_DATABASE: laravel_docker
-      MYSQL_ROOT_PASSWORD: root
-      SERVICE_TAG: dev
-      SERVICE_NAME: mysql
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
     volumes:
-      - dbdata:/var/lib/mysql
+      - ./.docker/mysql/db/data:/var/lib/mysql
       - ./.docker/mysql/my.cnf:/etc/mysql/my.cnf
     networks:
       - app-network
@@ -62,6 +59,6 @@ networks:
   app-network:
     driver: bridge
 
-volumes:
-  dbdata:
-    driver: local
+# volumes:
+#   dbdata:
+#     driver: local
