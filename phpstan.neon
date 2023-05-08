@@ -1,0 +1,14 @@
+parameters:
+  fileExtensions:
+    - php
+  level: 5 # https://phpstan.org/user-guide/rule-levels
+  checkAlwaysTrueCheckTypeFunctionCall: false
+  checkAlwaysTrueInstanceof: false
+  checkInternalClassCaseSensitivity: false
+  checkDynamicProperties: false
+  polluteScopeWithAlwaysIterableForeach: true
+  reportUnmatchedIgnoredErrors: true
+  excludePaths:
+    - tests/*
+  paths:
+    - app

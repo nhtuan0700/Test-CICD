@@ -28,8 +28,13 @@ WORKDIR /var/www
 # Change current user to www
 # USER www
 
-# Copy existing application directory contents
+FROM base as development
 COPY . /var/www
+
+FROM base as production
+COPY . /var/www
+RUN composer install \
+    && chmod -R 777 storage
 
 # Expose port 9000 and start php-fpm server
 EXPOSE 9000
