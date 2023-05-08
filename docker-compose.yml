@@ -5,6 +5,7 @@ services:
     build:
       context: .
       dockerfile: ./.docker/php/Dockerfile
+      target: development
     container_name: php
     restart: unless-stopped
     tty: true
