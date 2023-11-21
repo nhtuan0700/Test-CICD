@@ -1,12 +1,12 @@
 version: '3.7'
 services:
   #PHP Service
-  php:
+  app:
     build:
       context: .
       dockerfile: ./.docker/php/Dockerfile
       target: development
-    container_name: php
+    container_name: app
     restart: unless-stopped
     tty: true
     environment:
@@ -19,7 +19,7 @@ services:
     networks: 
       - app-network
     depends_on:
-      - db
+      - mysql_db
   
   # Nginx service
   server:
@@ -28,20 +28,20 @@ services:
     restart: unless-stopped
     tty: true
     ports:
-      - "9000:80"
-      - "9001:443"
+      - "8085:80"
+      - "8081:443"
     volumes:
       - ./:/var/www
       - ./.docker/nginx/conf.d:/etc/nginx/conf.d
     networks:
       - app-network
     depends_on:  
-      - php
+      - app
 
   # MYSQL Service
-  db:
+  mysql_db:
     image: mysql
-    container_name: db
+    container_name: mysql_db
     restart: unless-stopped
     tty: true
     ports:
@@ -52,6 +52,20 @@ services:
     volumes:
       - ./.docker/mysql/db/data:/var/lib/mysql
       - ./.docker/mysql/my.cnf:/etc/mysql/my.cnf
+    networks:
+      - app-network
+  
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    restart: unless-stopped
+    platform: linux/amd64
+    ports:
+      - '8082:80'
+    environment:
+    #  - PMA_ARBITRARY=1
+     - PMA_HOST=mysql_db
+    depends_on:
+      - mysql_db
     networks:
       - app-network
   
